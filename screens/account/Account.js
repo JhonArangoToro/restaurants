@@ -1,9 +1,9 @@
-import React, {useState,useEffect} from 'react'
+import React, {useState,useEffect, useCallback} from 'react'
 import { StyleSheet} from 'react-native'
 import Loading from '../../components/Loading'
+import { useFocusEffect } from '@react-navigation/native'
 
-
-import { isUserLogged } from '../../utils/actions'
+import { getCurrentUser, isUserLogged } from '../../utils/actions'
 import UserGuest from './UserGuest'
 import UserLogged from './UserLogged'
 
@@ -11,9 +11,19 @@ export default function Account() {
 
     const [login, setLogin] = useState(null)
 
-    useEffect(() => {
-        setLogin(isUserLogged())
-    }, [])
+    /*CADA QUE PASEMOS POR ACCOUNT VALIDARA SI ESTA LOGUEADO O NO */
+    useFocusEffect(
+
+        useCallback(() => {
+
+            const user = getCurrentUser()
+            user ? setLogin(true) : setLogin(false)
+            // setLogin(isUserLogged())
+        }, [])
+
+    )
+
+    
 
 
   
