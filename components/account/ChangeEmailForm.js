@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash'
 import { StyleSheet, View } from 'react-native'
 import { Button, Icon, Input } from 'react-native-elements'
 
-import { updateProfile } from '../../utils/actions'
+import { reauthenticate, updateEmail, updateProfile } from '../../utils/actions'
 import { validateEmail } from '../../utils/helpers'
 
 export default function ChangeEmailForm({ email, setShowModal, toasRef, setReloadUser}) {
@@ -22,20 +22,30 @@ export default function ChangeEmailForm({ email, setShowModal, toasRef, setReloa
             return
         }
 
-        // setLoading(true)    
-        // const result = await updateProfile({ displayName: newDisplayName}) //Vamos a cambiar un atributo llamado displayName
-        // setLoading(false)
-
-        // if(!result.statusResponse){
-        //     setError("Error al actulizar nombres y apellidos, intenta mas tarde.")
-        //     return
-        // }
-
-        // setReloadUser(true) //Para que recargue la pantalla una vez se actualice el nombre
+        setLoading(true)    
         
-        // //Primer parametro = Mensaje, Segundo parametro = Duracion del mensaje en milisegundos
-        // toasRef.current.show("Se han actualizado nombres y apellidos.",3000) 
-        // setShowModal(false)
+        const resultReauthenticate = await reauthenticate(password) 
+
+        if(!resultReauthenticate.statusResponse){
+            setErrorPassword("Contraseña incorrecta.")
+            setLoading(false)
+            return
+        }
+
+        const resultupdateEmail = await updateEmail(newEmail) 
+        setLoading(false)
+      
+
+        if(!resultupdateEmail.statusResponse){
+            setErrorEmail("No se pudo cambiar por este correo, ya se encuentra en uso.")
+            return
+        }
+
+        setReloadUser(true) //Para que recargue la pantalla una vez se actualice el nombre
+        
+        //Primer parametro = Mensaje, Segundo parametro = Duracion del mensaje en milisegundos
+        toasRef.current.show("Se ha actualizado el email.",3000) 
+        setShowModal(false)
     }
 
     const validateForm = () =>{
