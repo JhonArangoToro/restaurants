@@ -6,6 +6,7 @@ import { Icon, ListItem } from 'react-native-elements';
 import Modal from '../Modal';
 import ChangeDisplayNameForm from './ChangeDisplayNameForm';
 import ChangeEmailForm from './ChangeEmailForm';
+import ChangePasswordForm from './ChangePasswordForm';
 
 export default function AccountOptions({ user, toasRef, setReloadUser}) {
 
@@ -68,7 +69,10 @@ const generateOptions  =() => {
                 break;
             case "password":
                 setRenderComponent(
-                    <Text>password</Text>
+                    <ChangePasswordForm
+                        setShowModal= {setShowModal}
+                        toasRef ={toasRef}  
+                    />
                 )
                 break;
         }
