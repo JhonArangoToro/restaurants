@@ -17,10 +17,12 @@ export default function UserLogged() {
     const [loading, setLoading] = useState(false)
     const [loadingText, setLoadingText] = useState("")
     const [user, setUser] = useState(null)
+    const [reloadUser, setReloadUser] = useState(false)
 
     useEffect(() => {
         setUser(getCurrentUser())
-    }, [])
+        setReloadUser(false)
+    }, [reloadUser]) // Si cambia el reloadUser vamos a obligar que traiga la info nuevamente
 
     return (
         <View style={styles.container}>
@@ -28,7 +30,7 @@ export default function UserLogged() {
                 user && (
                             <View>
                                 <InfoUser user={user} setLoading={setLoading} setLoadingText={setLoadingText}/>
-                                <AccountOptions user={user}  toasRef ={toasRef}/>
+                                <AccountOptions user={user}  toasRef ={toasRef} setReloadUser ={setReloadUser}/>
                                 
                             </View>
                             

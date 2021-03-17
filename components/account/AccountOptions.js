@@ -6,7 +6,7 @@ import { Icon, ListItem } from 'react-native-elements';
 import Modal from '../Modal';
 import ChangeDisplayNameForm from './ChangeDisplayNameForm';
 
-export default function AccountOptions({ user, toasRef}) {
+export default function AccountOptions({ user, toasRef, setReloadUser}) {
 
     
     const [showModal, setShowModal] = useState(false)
@@ -51,6 +51,7 @@ const generateOptions  =() => {
                         displayName ={user.displayName} // lo que devuelve firebase del usuario
                         setShowModal ={setShowModal}
                         toasRef={toasRef}
+                        setReloadUser ={setReloadUser}
                     />
                 )
                 break;
