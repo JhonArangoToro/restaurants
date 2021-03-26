@@ -3,8 +3,8 @@ import { isEmpty, size } from 'lodash'
 import { StyleSheet, View } from 'react-native'
 import { Button, Icon, Input } from 'react-native-elements'
 
-import { reauthenticate, updateEmail, updateProfile } from '../../utils/actions'
-import { validateEmail } from '../../utils/helpers'
+import { reauthenticate, updatePassword } from '../../utils/actions'
+
 
 export default function ChangePasswordForm({ setShowModal, toasRef}) {
 
@@ -24,30 +24,28 @@ export default function ChangePasswordForm({ setShowModal, toasRef}) {
             return
         }
 
-        // setLoading(true)    
+        setLoading(true)    
         
-        // const resultReauthenticate = await reauthenticate(password) 
+        const resultReauthenticate = await reauthenticate(currentPassword) 
 
-        // if(!resultReauthenticate.statusResponse){
-        //     setErrorPassword("Contraseña incorrecta.")
-        //     setLoading(false)
-        //     return
-        // }
+        if(!resultReauthenticate.statusResponse){
+            setErrorCurrentPassword("Contraseña incorrecta.")
+            setLoading(false)
+            return
+        }
 
-        // const resultupdateEmail = await updateEmail(newEmail) 
-        // setLoading(false)
+        const resultupdatePassword = await updatePassword(newPassword) 
+        setLoading(false)
       
 
-        // if(!resultupdateEmail.statusResponse){
-        //     setErrorEmail("No se pudo cambiar por este correo, ya se encuentra en uso.")
-        //     return
-        // }
-
-        // setReloadUser(true) //Para que recargue la pantalla una vez se actualice el nombre
+        if(!resultupdatePassword.statusResponse){
+            setErrorNewPassword("No se pudo actualizar la contraseña.")
+            return
+        }
         
-        // //Primer parametro = Mensaje, Segundo parametro = Duracion del mensaje en milisegundos
-        // toasRef.current.show("Se ha actualizado el email.",3000) 
-        // setShowModal(false)
+        //Primer parametro = Mensaje, Segundo parametro = Duracion del mensaje en milisegundos
+        toasRef.current.show("Se ha actualizado la contraseña.",3000) 
+        setShowModal(false)
     }
 
     const validateForm = () =>{
